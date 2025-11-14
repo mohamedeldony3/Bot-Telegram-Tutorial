@@ -9,10 +9,10 @@ const URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 const mainMenu = {
   reply_markup: {
     keyboard: [
-      [{ text: "🎓 تلخيص درس" }, { text: "📘 شرح سؤال" }],
-      [{ text: "🧪 امتحان سريع" }],
-      [{ text: "📄 رفع ملف PDF" }, { text: "🎤 شرح فويس" }],
-      [{ text: "⚙️ الإعدادات" }]
+      [{ text: "تلخيص درس 🎓" }, { text: "شرح سؤال 📘" }],
+      [{ text: "امتحان سريع ✏️" }],
+      [{ text: "رفع ملف PDF 📄" }, { text: "شرح فويس 🎤" }],
+      [{ text: "الإعدادات ⚙️" }]
     ],
     resize_keyboard: true
   }
@@ -33,20 +33,28 @@ export default async function handler(req, res) {
       return sendMessage(chatId, "أهلاً 👋\nاختر الخدمة التي تريدها:", mainMenu);
     }
 
-    if (text === "🎓 تلخيص درس") {
+    if (text === "تلخيص درس 🎓") {
       return sendMessage(chatId, "📄 ابعت النص أو الدرس المراد تلخيصه:");
     }
 
-    if (text === "📘 شرح سؤال") {
+    if (text === "شرح سؤال 📘") {
       return sendMessage(chatId, "❓ ابعت السؤال أو صورة من الكتاب:");
     }
 
-    if (text === "🧪 امتحان سريع") {
+    if (text === "امتحان سريع ✏️") {
       const exam = await generateExam();
       return sendMessage(chatId, exam);
     }
 
-    if (text === "⚙️ الإعدادات") {
+    if (text === "رفع ملف PDF 📄") {
+      return sendMessage(chatId, "📄 ابعت ملف PDF وسيتم تلخيصه قريبًا (ميزة قيد التطوير).");
+    }
+
+    if (text === "شرح فويس 🎤") {
+      return sendMessage(chatId, "🎧 ابعت الفويس لتحويله لنص وشرحه.");
+    }
+
+    if (text === "الإعدادات ⚙️") {
       return sendSettingsMenu(chatId);
     }
 
@@ -57,7 +65,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // أزرار الإعدادات
+  // callback buttons
   if (update.callback_query) {
     const chatId = update.callback_query.from.id;
     const msgId = update.callback_query.message.message_id;
